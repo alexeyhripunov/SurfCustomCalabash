@@ -23,8 +23,7 @@ class IosCommon < Calabash::IBase
     alias :trait    :element
   end
 
-  #----------------------------------------------свайпы всех видов------------------------------------------------------
-  # простой свайп
+  #----------------------------------------------Custom Swipe iOS-------------------------------------------------------
   def strong_swipe(dir)
     if dir == 'left'
       swipe :left,  force: :strong
@@ -61,7 +60,6 @@ class IosCommon < Calabash::IBase
     end
   end
 
-  # свайп элемента
   def strong_swipe_element(element, dir)
     if dir == 'left'
       swipe :left, :query => element, force: :strong
@@ -98,17 +96,9 @@ class IosCommon < Calabash::IBase
     end
   end
 
-  # выбрать дату в дата пикере
-  def enter_date
-    wait_for_element_exists("datePicker", :timeout=>5)
-    target_date = Date.parse("July 28 2017")
-    date_time = DateTime.new(target_date.year, target_date.mon, target_date.day)
-    picker_set_date_time date_time
-  end
-
+  # pull-to-refresh screen
   def ptr
     swipe(:down, :offset => {:x => 0, :y => -200})
   end
-
 
 end

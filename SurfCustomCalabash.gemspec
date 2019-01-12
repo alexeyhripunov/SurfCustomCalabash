@@ -6,10 +6,10 @@ require "SurfCustomCalabash/version"
 Gem::Specification.new do |spec|
   spec.name          = "SurfCustomCalabash"
   spec.version       = SurfCustomCalabash::VERSION
-  spec.authors       = ["Алексей Хрипунов"]
+  spec.authors       = ["Alexey Hripunov"]
   spec.email         = ["hripunov@surfstudio.ru"]
 
-  spec.summary       = "Test version custom methods calabash"
+  spec.summary       = "Custom methods for calabash ios and android"
   spec.description   = "Test version custom methods calabash"
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"

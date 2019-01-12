@@ -31,8 +31,7 @@ class DroidCommon
     end
   end
 
-  #----------------------------------------------свайпы всех видов------------------------------------------------------
-  # простой свайп
+  #----------------------------------------------Custom Android Swipe---------------------------------------------------
   def strong_swipe(dr)
     if dr == "up"
       perform_action('drag', 50, 50, 15, 75, 4)
@@ -61,7 +60,6 @@ class DroidCommon
     end
   end
 
-  # свайп элемента
   def strong_swipe_element(element, dir)
     if dir == 'left'
       flick(element, :left)
@@ -98,10 +96,9 @@ class DroidCommon
     end
   end
 
+  # pull-to-refresh screen
   def ptr
     perform_action('drag', 50, 50, 15, 75, 4)
   end
-
-
 
 end
