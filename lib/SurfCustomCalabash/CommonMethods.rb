@@ -1,4 +1,4 @@
-require 'unicode'
+require 'rspec/expectations'
 
 module CommonMethods
 
@@ -149,14 +149,6 @@ module CommonMethods
     return get_random_text_string(7) + "@" + get_random_text_string(2) + ".test"
   end
 
-  def down_case(text)
-    Unicode::downcase text
-  end
-
-  def up_case(text)
-    Unicode::upcase text
-  end
-
   # get text from first element
   def remember(element)
     wait_for_element_exists(element, :timeout => 5)
@@ -211,6 +203,30 @@ module CommonMethods
     end
     # puts(cross)
     return cross
+  end
+
+  # if apps support two localization, this method check exists text in different locations
+  def text_with_locale(text_locale1, text_locale2)
+    if element_exists("* {text BEGINSWITH '#{text_locale2}'}")
+      puts (element_exists("* {text BEGINSWITH '#{text_locale2}'}"))
+      return "* {text BEGINSWITH '#{text_locale2}'}"
+    elsif element_exists("* {text BEGINSWITH '#{text_locale1}'}")
+      puts(element_exists("* {text BEGINSWITH '#{text_locale1}'}"))
+      return "* {text BEGINSWITH '#{text_locale1}'}"
+    else
+      return ("No such query!")
+    end
+  end
+
+  # if apps support two localization, this method check exists label in different locations
+  def label_with_locale(mark1, mark2)
+    if element_exists("* marked:'#{mark1}'")
+      return "* marked:'#{mark1}'"
+    elsif element_exists("* marked:'#{mark2}'")
+      return "* marked:'#{mark2}'"
+    else
+      return false
+    end
   end
 
 end

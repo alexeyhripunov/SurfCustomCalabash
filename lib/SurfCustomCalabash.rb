@@ -3,7 +3,7 @@ require "SurfCustomCalabash/version"
 module SurfCustomCalabash
   class Error < StandardError; end
   # Your code goes here...
-  require 'SurfCustomCalabash/DroidCommon'
-  require 'SurfCustomCalabash/IosCommon'
+  require 'SurfCustomCalabash/DroidMethods'
+  require 'SurfCustomCalabash/IosMethods'
   require 'SurfCustomCalabash/CommonMethods'
 end

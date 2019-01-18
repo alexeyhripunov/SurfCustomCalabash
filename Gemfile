@@ -7,4 +7,3 @@ gemspec
 
 gem 'calabash-android'
 gem 'rspec/expectations'
-gem 'unicode'

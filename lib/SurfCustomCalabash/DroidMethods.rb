@@ -1,29 +1,9 @@
 require 'calabash-android'
-require 'rspec/expectations'
 require 'SurfCustomCalabash/CommonMethods'
 
-class DroidCommon
-
+module DroidMethods
   include Calabash::Android::Operations
   include CommonMethods
-
-  def initialize(driver)
-    @driver = driver
-  end
-
-  def method_missing (sym, *args, &block)
-    @driver.send sym, *args, &block
-  end
-
-  def self.element(name, &block)
-    define_method(name.to_s, &block)
-  end
-
-  class << self
-    alias :value    :element
-    alias :action   :element
-    alias :trait    :element
-  end
 
   def close_keyboard
     if keyboard_visible?

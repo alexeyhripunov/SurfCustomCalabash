@@ -1,27 +1,8 @@
 require 'calabash-cucumber/ibase'
 require 'SurfCustomCalabash/CommonMethods'
 
-class IosCommon < Calabash::IBase
-
+module IosMethods
   include CommonMethods
-
-  def initialize(driver)
-    @driver = driver
-  end
-
-  def method_missing (sym, *args, &block)
-    @driver.send sym, *args, &block
-  end
-
-  def self.element(name, &block)
-    define_method(name.to_s, &block)
-  end
-
-  class << self
-    alias :value    :element
-    alias :action   :element
-    alias :trait    :element
-  end
 
   #----------------------------------------------Custom Swipe iOS-------------------------------------------------------
   def strong_swipe(dir)
