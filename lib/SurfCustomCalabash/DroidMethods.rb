@@ -76,6 +76,12 @@ module DroidMethods
     end
   end
 
+  # swipe trait-element from element_destination
+  def light_swipe_trait_until_exists(dir, element_destination)
+    until_element_exists(element_destination,
+                         :action =>  lambda{light_swipe_element(trait, dir)}, :timeout=>50)
+  end
+
   # pull-to-refresh screen
   def ptr
     perform_action('drag', 50, 50, 15, 75, 4)

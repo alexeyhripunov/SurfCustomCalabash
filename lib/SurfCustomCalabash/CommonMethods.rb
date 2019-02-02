@@ -40,6 +40,12 @@ module CommonMethods
     wait_for_element_does_not_exist(element, :timeout=>15)
   end
 
+  # wait trait-element on screen
+  def wait_for_screen
+    wait_for_elements_exist(trait, :timeout=>25)
+  end
+
+  # ----------------------------------------------------Custom Swipe----------------------------------------------------
   def strong_swipe_until_not_exist(dir, element_destination)
     until_element_does_not_exist(element_destination,
                                  :action =>  lambda{strong_swipe(dir)})
@@ -149,6 +155,13 @@ module CommonMethods
     return get_random_text_string(7) + "@" + get_random_text_string(2) + ".test"
   end
 
+  # get first digital from string
+  def extract_num_from_str(text)
+    text.gsub!(/[[:space:]]/, '')
+    num = text.scan(/\d+/).first.nil? ? "0" : text.scan(/\d+/).first
+    p num
+  end
+
   # get text from first element
   def remember(element)
     wait_for_element_exists(element, :timeout => 5)
@@ -203,6 +216,14 @@ module CommonMethods
     end
     # puts(cross)
     return cross
+  end
+
+  # swipe down if two element cross
+  def swipe_if_cross(element_front, element_behind)
+    if cross_coordinate(element_front, element_behind)
+      light_swipe("down")
+    end
+    sleep(1)
   end
 
   # if apps support two localization, this method check exists text in different locations

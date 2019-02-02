@@ -77,6 +77,10 @@ module IosMethods
     end
   end
 
+  def light_swipe_trait_until_exists(dir, element_destination)
+    light_swipe_until_exists(dir, element_destination)
+  end
+
   # pull-to-refresh screen
   def ptr
     swipe(:down, :offset => {:x => 0, :y => -200})
