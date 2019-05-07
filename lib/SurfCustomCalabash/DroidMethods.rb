@@ -11,6 +11,10 @@ module DroidMethods
     end
   end
 
+  def submit_keyboard
+    press_user_action_button
+  end
+
   #----------------------------------------------Custom Android Swipe---------------------------------------------------
   def strong_swipe(dr)
     if dr == "up"

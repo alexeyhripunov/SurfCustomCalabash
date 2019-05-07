@@ -27,6 +27,8 @@ module CommonMethods
       touch(element)
     else
       until_element_exists(element,:action => lambda{light_swipe('down')},  :timeout => 30)
+      light_swipe('down')
+      sleep(1)
       touch(element)
     end
   end
@@ -106,6 +108,16 @@ module CommonMethods
     end
   end
 
+  # Drag element from one place to place of other element
+  def drag_element(element_from , element_to)
+    x_from = get_coordinate_x(element_from)
+    y_from = get_coordinate_y(element_from)
+
+    x_to = get_coordinate_x(element_to)
+    y_to = get_coordinate_y(element_to)
+    drag_coordinates(x_from, y_from, x_to, y_to, 10, 0.5, 0.5)
+  end
+
   # -------------------------------------------------Asserts------------------------------------------------------------
   def assert_eql_with_rescue(element1, element2)
     begin
@@ -162,6 +174,13 @@ module CommonMethods
     p num
   end
 
+  # get last digital from string
+  def extract_last_num_from_str(text)
+    text.gsub!(/[[:space:]]/, '')
+    num = text.scan(/\d+/).first.nil? ? "0" : text.scan(/\d+/).last
+    p num
+  end
+
   # get text from first element
   def remember(element)
     wait_for_element_exists(element, :timeout => 5)
@@ -191,21 +210,29 @@ module CommonMethods
     wait_for_element_does_not_exist("* {text CONTAINS'#{text}'}", :timeout => 5, :retry_frequency => 5)
   end
 
-  # get element coordinate
-  def get_coordinate(element)
+  # get element's coordinates
+  def get_coordinate_x(element)
+    el = query(element)
+    coordinate = el[0]['rect']['center_x']
+    # puts(coordinate)
+    return coordinate.to_i
+  end
+
+  def get_coordinate_y(element)
     el = query(element)
     coordinate = el[0]['rect']['center_y']
     # puts(coordinate)
     return coordinate.to_i
   end
 
+
   # if elements cross - return true, if not - false
   def cross_coordinate(element_front, element_behind)
     cross = false
 
     if element_exists(element_front) && element_exists(element_behind)
-      coordinate_front = get_coordinate(element_front)
-      coordinate_behind = get_coordinate(element_behind)
+      coordinate_front = get_coordinate_y(element_front)
+      coordinate_behind = get_coordinate_y(element_behind)
       delta = 100
 
       if coordinate_front < coordinate_behind + delta

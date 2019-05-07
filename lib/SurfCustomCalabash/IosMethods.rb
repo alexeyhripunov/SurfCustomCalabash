@@ -78,7 +78,7 @@ module IosMethods
   end
 
   def light_swipe_trait_until_exists(dir, element_destination)
-    light_swipe_until_exists(dir, element_destination)
+    normal_swipe_until_exists(dir, element_destination)
   end
 
   # pull-to-refresh screen
