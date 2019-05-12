@@ -262,7 +262,7 @@ require 'rspec/expectations'
     elsif element_exists(locale_el2)
       return locale_el2
     else
-      fail("No such query!")
+      return ("No such query!")
     end
   end
 
