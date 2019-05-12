@@ -1,9 +1,9 @@
 require 'rspec/expectations'
 
-module CommonMethods
+# module CommonMethods
 
 
-  def enter_text(text)
+  def enter_text_from_keyboard(text)
     wait_for_keyboard(:timeout=>5)
     keyboard_enter_text(text)
   end
@@ -106,16 +106,6 @@ module CommonMethods
     elsif dir == 'вниз'
       until_element_exists("* {text CONTAINS'#{text}'}", :action =>  lambda{light_swipe('down'); sleep(1.5)}, :timeout => 60)
     end
-  end
-
-  # Drag element from one place to place of other element
-  def drag_element(element_from , element_to)
-    x_from = get_coordinate_x(element_from)
-    y_from = get_coordinate_y(element_from)
-
-    x_to = get_coordinate_x(element_to)
-    y_to = get_coordinate_y(element_to)
-    drag_coordinates(x_from, y_from, x_to, y_to, 10, 0.5, 0.5)
   end
 
   # -------------------------------------------------Asserts------------------------------------------------------------
@@ -225,6 +215,15 @@ module CommonMethods
     return coordinate.to_i
   end
 
+  # Drag element from one place to place of other element
+  def drag_element(element_from , element_to)
+    x_from = get_coordinate_x(element_from)
+    y_from = get_coordinate_y(element_from)
+
+    x_to = get_coordinate_x(element_to)
+    y_to = get_coordinate_y(element_to)
+    drag_coordinates(x_from, y_from, x_to, y_to, 10, 0.5, 0.5)
+  end
 
   # if elements cross - return true, if not - false
   def cross_coordinate(element_front, element_behind)
@@ -255,14 +254,15 @@ module CommonMethods
 
   # if apps support two localization, this method check exists text in different locations
   def text_with_locale(text_locale1, text_locale2)
-    if element_exists("* {text BEGINSWITH '#{text_locale2}'}")
-      puts (element_exists("* {text BEGINSWITH '#{text_locale2}'}"))
-      return "* {text BEGINSWITH '#{text_locale2}'}"
-    elsif element_exists("* {text BEGINSWITH '#{text_locale1}'}")
-      puts(element_exists("* {text BEGINSWITH '#{text_locale1}'}"))
-      return "* {text BEGINSWITH '#{text_locale1}'}"
+    sleep(1)
+    locale_el1 = "* {text CONTAINS '#{text_locale1}'}"
+    locale_el2 = "* {text CONTAINS '#{text_locale2}'}"
+    if element_exists(locale_el1)
+      return locale_el1
+    elsif element_exists(locale_el2)
+      return locale_el2
     else
-      return ("No such query!")
+      fail("No such query!")
     end
   end
 
@@ -277,4 +277,4 @@ module CommonMethods
     end
   end
 
-end
+# end

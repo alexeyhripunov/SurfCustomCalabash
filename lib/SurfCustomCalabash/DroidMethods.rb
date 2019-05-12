@@ -1,9 +1,9 @@
 require 'calabash-android'
 require 'SurfCustomCalabash/CommonMethods'
 
-module DroidMethods
-  include Calabash::Android::Operations
-  include CommonMethods
+# module DroidMethods
+#   include Calabash::Android::Operations
+#   include CommonMethods
 
   def close_keyboard
     if keyboard_visible?
@@ -91,4 +91,4 @@ module DroidMethods
     perform_action('drag', 50, 50, 15, 75, 4)
   end
 
-end
+# end

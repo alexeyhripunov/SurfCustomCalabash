@@ -1,8 +1,17 @@
 require 'calabash-cucumber/ibase'
 require 'SurfCustomCalabash/CommonMethods'
 
-module IosMethods
-  include CommonMethods
+# module IosMethods
+#   include CommonMethods
+
+  # tap on Done on keyboard
+  def submit_keyboard
+    if element_exists("* marked:'Toolbar Done Button'")
+      touch("* marked:'Toolbar Done Button'")
+    else
+      tap_keyboard_action_key
+    end
+  end
 
   #----------------------------------------------Custom Swipe iOS-------------------------------------------------------
   def strong_swipe(dir)
@@ -86,4 +95,4 @@ module IosMethods
     swipe(:down, :offset => {:x => 0, :y => -200})
   end
 
-end
+# end
