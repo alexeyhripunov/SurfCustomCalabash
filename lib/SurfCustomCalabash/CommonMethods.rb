@@ -1,8 +1,5 @@
 require 'rspec/expectations'
 
-# module CommonMethods
-
-
   def enter_text_from_keyboard(text)
     wait_for_keyboard(:timeout=>5)
     keyboard_enter_text(text)
@@ -252,17 +249,68 @@ require 'rspec/expectations'
     sleep(1)
   end
 
+  # --------------------------------------------------Localization------------------------------------------------------
+  # get locale apps - Ru or Eng
+  # parameter - element with text
+  def get_app_location(element)
+    sleep(1.5)
+    if element_exists(element)
+      text_element = remember(element)
+      if check_cyrillic(text_element)
+        locale = 'RUS'
+      else
+        locale = 'ENG'
+      end
+    else
+      p "Fail localization"
+    end
+    p locale
+    return locale
+  end
+
+  # check cyrillic symbols in string
+  def check_cyrillic(str)
+    regexp = /\p{Cyrillic}+.*?\.?/
+    if str.match(regexp).nil?
+      return false
+    else
+      return true
+    end
+  end
+
   # if apps support two localization, this method check exists text in different locations
   def text_with_locale(text_locale1, text_locale2)
     sleep(1)
-    locale_el1 = "* {text CONTAINS '#{text_locale1}'}"
-    locale_el2 = "* {text CONTAINS '#{text_locale2}'}"
-    if element_exists(locale_el1)
-      return locale_el1
-    elsif element_exists(locale_el2)
-      return locale_el2
+
+    # $locale is global variables
+    # $locale setup in first app launch
+    if !$locale.nil?
+      if check_cyrillic(text_locale1)
+        rus_locale = "* {text CONTAINS '#{text_locale1}'}"
+        eng_locale = "* {text CONTAINS '#{text_locale2}'}"
+      elsif check_cyrillic(text_locale2)
+        rus_locale = "* {text CONTAINS '#{text_locale2}'}"
+        eng_locale = "* {text CONTAINS '#{text_locale1}'}"
+      end
+
+      if $locale == "RUS"
+        return rus_locale
+      elsif $locale == "ENG"
+        return eng_locale
+      end
     else
-      return ("No such query!")
+      # if $locale is not Rus or Eng
+      # wait element on screen with text_locale1 or text_locale2
+      locale_el1 = "* {text CONTAINS '#{text_locale1}'}"
+      locale_el2 = "* {text CONTAINS '#{text_locale2}'}"
+
+      if element_exists(locale_el1)
+        return locale_el1
+      elsif element_exists(locale_el2)
+        return locale_el2
+      else
+        return ("No such query!")
+      end
     end
   end
 
@@ -277,4 +325,3 @@ require 'rspec/expectations'
     end
   end
 
-# end

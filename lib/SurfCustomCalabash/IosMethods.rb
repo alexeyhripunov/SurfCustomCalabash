@@ -1,9 +1,6 @@
 require 'calabash-cucumber/ibase'
 require 'SurfCustomCalabash/CommonMethods'
 
-# module IosMethods
-#   include CommonMethods
-
   # tap on Done on keyboard
   def submit_keyboard
     if element_exists("* marked:'Toolbar Done Button'")
@@ -94,5 +91,3 @@ require 'SurfCustomCalabash/CommonMethods'
   def ptr
     swipe(:down, :offset => {:x => 0, :y => -200})
   end
-
-# end

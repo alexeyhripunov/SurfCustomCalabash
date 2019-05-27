@@ -1,10 +1,6 @@
 require 'calabash-android'
 require 'SurfCustomCalabash/CommonMethods'
 
-# module DroidMethods
-#   include Calabash::Android::Operations
-#   include CommonMethods
-
   def close_keyboard
     if keyboard_visible?
       hide_soft_keyboard
@@ -91,4 +87,3 @@ require 'SurfCustomCalabash/CommonMethods'
     perform_action('drag', 50, 50, 15, 75, 4)
   end
 
-# end
