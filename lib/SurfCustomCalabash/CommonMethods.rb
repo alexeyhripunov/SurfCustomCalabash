@@ -7,9 +7,9 @@ require 'rspec/expectations'
 
   # ----------------------------------------------Custom Taps-----------------------------------------------------------
   # wait element and tap
-  def tap_on(element)
-    wait_for_elements_exist(element, :timeout=>15, :retry_frequency=>5)
-    sleep(0.5)
+def tap_on(element, timeout_duration = 15, sleep_duration = 0.5)
+    wait_for_elements_exist(element, :timeout=>timeout_duration, :retry_frequency=>5)
+    sleep(sleep_duration)
     touch(element)
   end
 
@@ -18,30 +18,30 @@ require 'rspec/expectations'
   end
 
   # if element exists - tap, if not - swipe until element exists and tap
-  def tap_or_swipe(element)
+def tap_or_swipe(element, timeout_duration = 30)
     if element_exists(element)
-      sleep(1)
+      sleep(2)
       touch(element)
     else
-      until_element_exists(element,:action => lambda{light_swipe('down')},  :timeout => 30)
+      until_element_exists(element,:action => lambda{light_swipe('down')},  :timeout => timeout_duration)
       light_swipe('down')
-      sleep(1)
+      sleep(2)
       touch(element)
     end
   end
 
   # ----------------------------------------------------Custom Waits----------------------------------------------------
-  def wait_element(element)
-    wait_for_element_exists(element, :timeout=>15)
+  def wait_element(element, sleep_duration = 15)
+    wait_for_element_exists(element, :timeout=>sleep_duration)
   end
 
-  def wait_no_element(element)
-    wait_for_element_does_not_exist(element, :timeout=>15)
+  def wait_no_element(element, sleep_duration = 15)
+    wait_for_element_does_not_exist(element, :timeout=>sleep_duration)
   end
 
   # wait trait-element on screen
-  def wait_for_screen
-    wait_for_elements_exist(trait, :timeout=>25)
+  def wait_for_screen(sleep_duration = 25)
+    wait_for_elements_exist(trait, :timeout=>sleep_duration)
   end
 
   # ----------------------------------------------------Custom Swipe----------------------------------------------------
@@ -65,14 +65,14 @@ require 'rspec/expectations'
                          :action =>  lambda{strong_swipe( dir)})
   end
 
-  def normal_swipe_until_exists(dir, element_destination)
+  def normal_swipe_until_exists(dir, element_destination, sleep_duration = 2, timeout_duration = 40)
     until_element_exists(element_destination,
-                         :action =>  lambda{normal_swipe( dir); sleep(2)}, :timeout=>40)
+                         :action =>  lambda{normal_swipe( dir); sleep(sleep_duration)}, :timeout=>timeout_duration)
   end
 
-  def light_swipe_until_exists(dir, element_destination)
+  def light_swipe_until_exists(dir, element_destination, sleep_duration = 2, timeout_duration = 40)
     until_element_exists(element_destination,
-                         :action =>  lambda{light_swipe( dir); sleep(2)}, :timeout=>60)
+                         :action =>  lambda{light_swipe( dir); sleep(sleep_duration)}, :timeout=>timeout_duration)
 
   end
 
@@ -81,9 +81,9 @@ require 'rspec/expectations'
                          :action =>  lambda{strong_swipe_element(element, dir)})
   end
 
-  def light_swipe_element_until_exists(dir, element, element_destination)
+  def light_swipe_element_until_exists(dir, element, element_destination, timeout_duration = 40)
     until_element_exists(element_destination,
-                         :action =>  lambda{light_swipe_element(element, dir)}, :timeout=>70)
+                         :action =>  lambda{light_swipe_element(element, dir)}, :timeout=>timeout_duration)
   end
 
   def strong_swipe_element_until_not_exists(dir, element, element_destination)
@@ -91,17 +91,19 @@ require 'rspec/expectations'
                                  :action =>  lambda{pan(element, dir)})
   end
 
-  def light_swipe_element_until_not_exists(dir, element, element_destination)
+  def light_swipe_element_until_not_exists(dir, element, element_destination, timeout_duration = 40)
     until_element_does_not_exist(element_destination,
-                                 :action =>  lambda{light_swipe_element(element, dir)}, :timeout=>70)
+                                 :action =>  lambda{light_swipe_element(element, dir)}, :timeout=>timeout_duration)
   end
 
-  def swipe_to_text(dir, text)
+  def swipe_to_text(dir, text, timeout_duration = 60)
     sleep(1)
-    if dir == 'вверх'
-      until_element_exists("* {text CONTAINS'#{text}'}", :action =>  lambda{light_swipe('up'); sleep(1)}, :timeout => 60)
-    elsif dir == 'вниз'
-      until_element_exists("* {text CONTAINS'#{text}'}", :action =>  lambda{light_swipe('down'); sleep(1.5)}, :timeout => 60)
+    if dir == 'up'
+      until_element_exists("* {text CONTAINS'#{text}'}", :action =>  lambda{light_swipe('up');
+      sleep(1)}, :timeout => timeout_duration)
+    elsif dir == 'down'
+      until_element_exists("* {text CONTAINS'#{text}'}", :action =>  lambda{light_swipe('down');
+      sleep(1.5)}, :timeout => timeout_duration)
     end
   end
 
@@ -110,7 +112,7 @@ require 'rspec/expectations'
     begin
       expect(element1).to eq(element2)
       true
-    rescue Exception => e
+    rescue StandardError
       false
     end
   end
@@ -169,8 +171,8 @@ require 'rspec/expectations'
   end
 
   # get text from first element
-  def remember(element)
-    wait_for_element_exists(element, :timeout => 5)
+  def remember(element, timeout_duration = 5)
+    wait_for_element_exists(element, :timeout => timeout_duration)
     sleep(1.5)
     name = query(element)
     save_name = name.first['text']
@@ -179,8 +181,8 @@ require 'rspec/expectations'
   end
 
   # get text from last element
-  def remember_last_text(element)
-    wait_for_element_exists(element, :timeout => 5)
+  def remember_last_text(element, timeout_duration = 5)
+    wait_for_element_exists(element, :timeout => timeout_duration)
     sleep(1.5)
     name = query(element)
     save_name = name.last['text']
@@ -189,12 +191,12 @@ require 'rspec/expectations'
   end
 
   # wait text
-  def check_text(text)
-    wait_for_element_exists("* {text CONTAINS'#{text}'}", :timeout => 5, :retry_frequency => 2)
+  def check_text(text, timeout_duration = 5)
+    wait_for_element_exists("* {text CONTAINS'#{text}'}", :timeout => timeout_duration, :retry_frequency => 2)
   end
 
-  def no_check_text(text)
-    wait_for_element_does_not_exist("* {text CONTAINS'#{text}'}", :timeout => 5, :retry_frequency => 5)
+  def no_check_text(text, timeout_duration = 5)
+    wait_for_element_does_not_exist("* {text CONTAINS'#{text}'}", :timeout => timeout_duration, :retry_frequency => 5)
   end
 
   # get element's coordinates
