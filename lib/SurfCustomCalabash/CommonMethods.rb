@@ -112,7 +112,7 @@ def tap_or_swipe(element, timeout_duration: 30)
     begin
       expect(element1).to eq(element2)
       true
-    rescue StandardError
+    rescue RSpec::Expectations::ExpectationNotMetError
       false
     end
   end
