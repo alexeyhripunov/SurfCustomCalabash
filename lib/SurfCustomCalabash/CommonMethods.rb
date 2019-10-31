@@ -7,7 +7,7 @@ require 'rspec/expectations'
 
   # ----------------------------------------------Custom Taps-----------------------------------------------------------
   # wait element and tap
-def tap_on(element, timeout_duration = 15, sleep_duration = 0.5)
+def tap_on(element, timeout_duration: 15, sleep_duration: 0.5)
     wait_for_elements_exist(element, :timeout=>timeout_duration, :retry_frequency=>5)
     sleep(sleep_duration)
     touch(element)
@@ -18,7 +18,7 @@ def tap_on(element, timeout_duration = 15, sleep_duration = 0.5)
   end
 
   # if element exists - tap, if not - swipe until element exists and tap
-def tap_or_swipe(element, timeout_duration = 30)
+def tap_or_swipe(element, timeout_duration: 30)
     if element_exists(element)
       sleep(2)
       touch(element)
@@ -31,72 +31,72 @@ def tap_or_swipe(element, timeout_duration = 30)
   end
 
   # ----------------------------------------------------Custom Waits----------------------------------------------------
-  def wait_element(element, timeout_duration = 15)
+  def wait_element(element, timeout_duration: 15)
     wait_for_element_exists(element, :timeout=>timeout_duration)
   end
 
-  def wait_no_element(element, timeout_duration = 15)
+  def wait_no_element(element, timeout_duration: 15)
     wait_for_element_does_not_exist(element, :timeout=>timeout_duration)
   end
 
   # wait trait-element on screen
-  def wait_for_screen(timeout_duration = 25)
+  def wait_for_screen(timeout_duration: 25)
     wait_for_elements_exist(trait, :timeout=>timeout_duration)
   end
 
   # ----------------------------------------------------Custom Swipe----------------------------------------------------
-  def strong_swipe_until_not_exist(dir, element_destination, timeout_duration = 40)
+  def strong_swipe_until_not_exist(dir, element_destination, timeout_duration: 40)
     until_element_does_not_exist(element_destination,
                                  :action =>  lambda{strong_swipe(dir)}, :timeout => timeout_duration)
   end
 
-  def normal_swipe_until_not_exist(dir, element_destination, timeout_duration = 40)
+  def normal_swipe_until_not_exist(dir, element_destination, timeout_duration: 40)
     until_element_does_not_exist(element_destination,
                                  :action =>  lambda{normal_swipe(dir)}, :timeout => timeout_duration)
   end
 
-  def light_swipe_until_not_exist(dir, element_destination, timeout_duration = 40)
+  def light_swipe_until_not_exist(dir, element_destination, timeout_duration: 40)
     until_element_does_not_exist(element_destination,
                                  :action =>  lambda{light_swipe( dir)}, :timeout => timeout_duration)
   end
 
-  def strong_swipe_until_exists(dir, element_destination, timeout_duration = 40)
+  def strong_swipe_until_exists(dir, element_destination, timeout_duration: 40)
     until_element_exists(element_destination,
                          :action =>  lambda{strong_swipe( dir)}, :timeout => timeout_duration)
   end
 
-  def normal_swipe_until_exists(dir, element_destination, sleep_duration = 2, timeout_duration = 40)
+  def normal_swipe_until_exists(dir, element_destination, sleep_duration: 2, timeout_duration: 40)
     until_element_exists(element_destination,
                          :action =>  lambda{normal_swipe( dir); sleep(sleep_duration)}, :timeout=>timeout_duration)
   end
 
-  def light_swipe_until_exists(dir, element_destination, sleep_duration = 2, timeout_duration = 40)
+  def light_swipe_until_exists(dir, element_destination, sleep_duration: 2, timeout_duration: 40)
     until_element_exists(element_destination,
                          :action =>  lambda{light_swipe( dir); sleep(sleep_duration)}, :timeout=>timeout_duration)
 
   end
 
-  def strong_swipe_element_until_exists(dir, element, element_destination, timeout_duration = 40)
+  def strong_swipe_element_until_exists(dir, element, element_destination, timeout_duration: 40)
     until_element_exists(element_destination,
                          :action =>  lambda{strong_swipe_element(element, dir)}, :timeout=>timeout_duration)
   end
 
-  def light_swipe_element_until_exists(dir, element, element_destination, timeout_duration = 40)
+  def light_swipe_element_until_exists(dir, element, element_destination, timeout_duration: 40)
     until_element_exists(element_destination,
                          :action =>  lambda{light_swipe_element(element, dir)}, :timeout=>timeout_duration)
   end
 
-  def strong_swipe_element_until_not_exists(dir, element, element_destination, timeout_duration = 40)
+  def strong_swipe_element_until_not_exists(dir, element, element_destination, timeout_duration: 40)
     until_element_does_not_exist(element_destination,
                                  :action =>  lambda{pan(element, dir)}, :timeout=>timeout_duration)
   end
 
-  def light_swipe_element_until_not_exists(dir, element, element_destination, timeout_duration = 40)
+  def light_swipe_element_until_not_exists(dir, element, element_destination, timeout_duration: 40)
     until_element_does_not_exist(element_destination,
                                  :action =>  lambda{light_swipe_element(element, dir)}, :timeout=>timeout_duration)
   end
 
-  def swipe_to_text(dir, text, timeout_duration = 60)
+  def swipe_to_text(dir, text, timeout_duration: 60)
     sleep(1)
     if dir == 'up'
       until_element_exists("* {text CONTAINS'#{text}'}", :action =>  lambda{light_swipe('up');
@@ -171,7 +171,7 @@ def tap_or_swipe(element, timeout_duration = 30)
   end
 
   # get text from first element
-  def remember(element, timeout_duration = 5)
+  def remember(element, timeout_duration: 5)
     wait_for_element_exists(element, :timeout => timeout_duration)
     sleep(1.5)
     name = query(element)
@@ -181,7 +181,7 @@ def tap_or_swipe(element, timeout_duration = 30)
   end
 
   # get text from last element
-  def remember_last_text(element, timeout_duration = 5)
+  def remember_last_text(element, timeout_duration: 5)
     wait_for_element_exists(element, :timeout => timeout_duration)
     sleep(1.5)
     name = query(element)
@@ -191,11 +191,11 @@ def tap_or_swipe(element, timeout_duration = 30)
   end
 
   # wait text
-  def check_text(text, timeout_duration = 5)
+  def check_text(text, timeout_duration: 5)
     wait_for_element_exists("* {text CONTAINS'#{text}'}", :timeout => timeout_duration, :retry_frequency => 2)
   end
 
-  def no_check_text(text, timeout_duration = 5)
+  def no_check_text(text, timeout_duration: 5)
     wait_for_element_does_not_exist("* {text CONTAINS'#{text}'}", :timeout => timeout_duration, :retry_frequency => 5)
   end
 
