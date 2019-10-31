@@ -77,7 +77,7 @@ require 'SurfCustomCalabash/CommonMethods'
   end
 
   # swipe trait-element from element_destination
-  def light_swipe_trait_until_exists(dir, element_destination, timeout_duration = 50)
+  def light_swipe_trait_until_exists(dir, element_destination, timeout_duration: 50)
     until_element_exists(element_destination,
                          :action =>  lambda{light_swipe_element(trait, dir)}, :timeout=>timeout_duration)
   end
