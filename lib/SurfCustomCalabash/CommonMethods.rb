@@ -45,7 +45,6 @@ require 'rspec/expectations'
     wait_for_elements_exist(trait, :timeout=>timeout_duration)
     sleep(sleep_duration)
   end
-  end
 
   # ----------------------------------------------------Custom Swipe----------------------------------------------------
   def strong_swipe_until_not_exist(dir, element_destination, timeout_duration: 40)
