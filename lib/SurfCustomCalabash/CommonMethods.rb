@@ -7,9 +7,8 @@ require 'rspec/expectations'
 
   # ----------------------------------------------Custom Taps-----------------------------------------------------------
   # wait element and tap
-def tap_on(element, timeout_duration: 15, sleep_duration: 0.5)
-    wait_for_elements_exist(element, :timeout=>timeout_duration, :retry_frequency=>5)
-    sleep(sleep_duration)
+  def tap_on(element, timeout_duration: 15, sleep_duration: 0.5)
+    wait_element(element, timeout_duration: timeout_duration, sleep_duration: sleep_duration, retry_frequency: 5)
     touch(element)
   end
 
@@ -18,30 +17,33 @@ def tap_on(element, timeout_duration: 15, sleep_duration: 0.5)
   end
 
   # if element exists - tap, if not - swipe until element exists and tap
-def tap_or_swipe(element, timeout_duration: 30)
+  def tap_or_swipe(element, timeout_duration: 30, sleep_duration: 2)
     if element_exists(element)
-      sleep(2)
+      sleep(sleep_duration)
       touch(element)
     else
       until_element_exists(element,:action => lambda{light_swipe('down')},  :timeout => timeout_duration)
       light_swipe('down')
-      sleep(2)
+      sleep(sleep_duration)
       touch(element)
     end
   end
 
   # ----------------------------------------------------Custom Waits----------------------------------------------------
-  def wait_element(element, timeout_duration: 15)
-    wait_for_element_exists(element, :timeout=>timeout_duration)
+  def wait_element(element, timeout_duration: 15, sleep_duration: 0, retry_frequency: 0.3)
+    wait_for_element_exists(element, :timeout=>timeout_duration, :retry_frequency=>retry_frequency)
+    sleep(sleep_duration)
   end
 
-  def wait_no_element(element, timeout_duration: 15)
-    wait_for_element_does_not_exist(element, :timeout=>timeout_duration)
+  def wait_no_element(element, timeout_duration: 15, sleep_duration: 0, retry_frequency: 0.3)
+    wait_for_element_does_not_exist(element, :timeout=>timeout_duration, :retry_frequency=>retry_frequency)
+    sleep(sleep_duration)
   end
 
   # wait trait-element on screen
-  def wait_for_screen(timeout_duration: 25)
+  def wait_for_screen(timeout_duration: 25, sleep_duration: 0)
     wait_for_elements_exist(trait, :timeout=>timeout_duration)
+    sleep(sleep_duration)
   end
 
   # ----------------------------------------------------Custom Swipe----------------------------------------------------
