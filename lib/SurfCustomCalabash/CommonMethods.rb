@@ -228,9 +228,8 @@ def check_text(text, sleep_duration: 0, timeout_duration: 5)
 end
 
 def no_check_text(text, timeout_duration: 5)
-  puts "Deprecated with 0.1.9 version SurfCustomCalabash"
-  puts "Use check_no_text"
-  wait_no_element("* {text CONTAINS'#{text}'}", timeout_duration: timeout_duration, retry_frequency: 5)
+  warn "Deprecated with 0.1.9 version SurfCustomCalabash, use check_no_text intead"
+  check_no_text(text, timeout_duration: timeout_duration)
 end
 
 def check_no_text(text, sleep_duration: 0, timeout_duration: 5)
