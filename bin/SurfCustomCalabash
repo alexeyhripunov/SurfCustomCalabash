@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'rbconfig'
+
+# for ruby 1.9.1 and earlier
+unless defined? RbConfig.ruby
+  def RbConfig.ruby
+    File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"])
+  end
+end
+
+require File.join(File.dirname(__FILE__), "surf-calabash-helpers")
+
+@hierarchy = File.join(FileUtils.pwd, "Change_it_to_your_own_project_name")
+@source_dir = File.join(File.dirname(__FILE__), '..', 'sources')
+
+if ARGV.length == 0
+  print_usage
+else
+  cmd = ARGV.shift
+
+  case cmd
+    when 'help'
+      print_help
+    when 'gen'
+      gen = File.join(File.dirname(__FILE__), "surf-calabash-gen")
+      require gen
+      surf_gen
+    when 'android_console'
+      require 'calabash-android/helpers'
+      require 'calabash-android/utils'
+      require 'calabash-android/java_keystore'
+      require 'calabash-android/env'
+      require File.join(File.dirname(__FILE__), "surf-console-helpers")
+
+      if ARGV.empty? or not is_apk_file?(ARGV.first)
+        puts "The first parameter must be the path to the apk file."
+        exit 1
+      else
+        android_console(relative_to_full_path(ARGV.shift))
+      end
+
+    when 'ios_console'
+      require File.join(File.dirname(__FILE__), "surf-console-helpers")
+      ios_console
+    when 'version'
+      require_relative '../lib/SurfCustomCalabash/version'
+      puts SurfCustomCalabash::VERSION
+    else
+      puts "Invalid command '#{cmd}'"
+      print_usage
+  end
+end

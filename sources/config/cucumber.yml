@@ -1,0 +1,24 @@
+# config/cucumber.yml
+##YAML Template
+
+android: PLATFORM=android -r features/support -r features/android/support -r features/android  -r features/step_definitions -r features/android/pages -r features/android/pages/standard
+ios: PLATFORM=ios -r features/support -r features/ios/support -r features/step_definitions -r features/ios/pages
+<%
+date = Time.now.strftime('%d_%m-%H:%M:%S')
+default_report = "./output_#{date}_.html"
+default_json = "./output_#{date}.json"
+default_allure = "./output_#{date}.html"
+default_rerun = "./rerun_#{date}.txt"
+%>
+
+common: NO_STOP='1'
+rerun_out: -f rerun -o ./reports/<%= default_rerun %>
+html_report:  -f html -o ./reports/<%= default_report %>
+json_report: -f json -o ./reports/<%= ENV['DEVICE_INFO']%>.json
+json_xray: -f json -o ./reports/<%= ENV['DEVICE_INFO']%>_<%= ENV['ADB_DEVICE_ARG']%>.json
+
+
+run:  -p common -p rerun_out -p html_report -p json_report -p allure_report -p json_xray
+
+
+

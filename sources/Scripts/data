@@ -1,0 +1,7 @@
+login enter_login
+jira_pass enter_pass
+project_key enter_project_key
+project_name_jenkins enter_project_name
+jenkins_pass enter_jenkins_pass
+key_execution_and enter_key_test_exec
+key_execution_ios enter_key_test_exec
