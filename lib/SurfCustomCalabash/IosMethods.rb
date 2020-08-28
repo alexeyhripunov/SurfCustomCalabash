@@ -2,9 +2,9 @@ require 'calabash-cucumber/ibase'
 require 'SurfCustomCalabash/CommonMethods'
 
 # close keyboard with a swipe of the screen
-def close_keyboard
+def close_keyboard(x_start: 100, y_start: 150)
   if keyboard_visible?
-    pan_coordinates({x: 100, y: 150}, {x: 100, y: 250})
+    pan_coordinates({x: x_start, y: y_start}, {x: x_start, y: y_start+100})
   end
 end
 

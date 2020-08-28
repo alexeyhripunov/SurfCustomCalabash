@@ -23,4 +23,5 @@ gem 'open3'
 gem 'timeout'
 gem 'process'
 gem 'rspec'
+gem 'streamio-ffmpeg'
 

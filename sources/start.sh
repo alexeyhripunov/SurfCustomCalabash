@@ -29,6 +29,11 @@ echo "
 10 - если хотите запустить дефолтный прогон калабаш-айос
 11 - если хотите запустить прогон определенной фичи калабаш-айос
 12 - если хотите запустить прогон по тэгу калабаш-айос
+
+13 - если хотите сгруппировать все упавшие шаги из json отчета
+14 - если хотите посмотреть различия между сценариями в jira и репозитории
+15 - если хотите удалить все сценарии из jira, которых нет в репозитории
+16 - если хотите найти сценарии с одинаковыми названиями в репозитории
 "
 
 file_path= echo $PWD
@@ -101,4 +106,29 @@ elif [ $p = 1 ]; then
     read tag
     sh ./Scripts/ti.sh $tag
 
+ elif [ $p = 13 ]; then
+    echo "Введите путь до json с результатами прогона"
+    read tag
+    ruby -r "./group_steps.rb" -e "GroupScenarios.new('$tag', 'group_steps.txt').group_failed_scenarios"
+
+ elif [ $p = 14 ]; then
+    ruby -r "./Scripts/get_scenarios.rb" -e "GetScenarios.new.show_difference_tests"
+
+ elif [ $p = 15 ]; then
+    arr_test=$(ruby -r "./Scripts/get_scenarios.rb" -e "GetScenarios.new.show_all_scenarios_not_exists_in_repo")
+    if !([ -z "$arr_test" ]); then
+        echo "Сценарии которые есть в jira, но нет в репозитории:"
+        ruby -r "./Scripts/get_scenarios.rb" -e "GetScenarios.new.show_all_scenarios_not_exists_in_repo"
+        echo "\n"
+        read -p "Удалить эти сценарии из Jira (y/n)?" yn
+        case $yn in
+             [Nn]* ) exit;;
+             [Yy]* ) ruby -r "./Scripts/get_scenarios.rb" -e "GetScenarios.new.delete_all_waste_tests";
+             break;;
+        esac
+    else
+        echo "В jira нет лишних сценариев"
+    fi
+ elif [ $p = 16 ]; then
+    ruby -r "./Scripts/get_scenarios.rb" -e "GetScenarios.new.show_all_duplicate_scenarios"
  fi

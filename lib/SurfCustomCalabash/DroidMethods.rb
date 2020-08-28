@@ -1,7 +1,8 @@
 require 'calabash-android'
 require 'SurfCustomCalabash/CommonMethods'
 
-def close_keyboard
+# close keyboard, parameters use ios only
+def close_keyboard(x_start: 0, y_start:0)
   if keyboard_visible?
     hide_soft_keyboard
   end

@@ -27,7 +27,7 @@ class AndroidLogs
     %x{ps | grep logcat | grep -v grep | cut -d' ' -f1 | awk '{print $1}' | xargs kill -2}
 
     begin
-      Timeout.timeout(5) { File.open(@log_file, 'w') { |f| f << @logcat[1].readlines.join("\n") } }
+      Timeout.timeout(30) { File.open(@log_file, 'w') { |f| f << @logcat[1].readlines.join("\n") } }
     rescue Timeout::Error
       puts("Error write log file")
       @logcat[0].close
@@ -37,5 +37,4 @@ class AndroidLogs
     @logcat[0].close
     @logcat[1].close
   end
-
 end

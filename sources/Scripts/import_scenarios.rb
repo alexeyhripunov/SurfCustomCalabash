@@ -1,36 +1,45 @@
 require 'rest-client'
 require 'json'
 require 'base64'
+require_relative 'get_scenarios'
 
 class Scenarios
 
-  # path - path to dir with autotests, пример - /Users/user_name/autotests/project-test/
+  # path - путь до папки с автотестами, пример - /Users/hripunov/autotests/labirint-test/
   def initialize(path)
-
-    # hash with data from file scripts/data
+    # хэш со всеми данными из файла scripts/data
     @all_data = get_all_data
 
-    # login in jenkins
+    # логин в джире
     @login = @all_data['login']
 
-    # pass in jenkins
+    # пароль в джире
     @password = @all_data['jira_pass']
 
-    # key project
+    # ключ проекта в формате LABIOS
     @key = @all_data['project_key']
 
-    # path to dir with autotests
+    # путь до папки с автотестами
     @path = path
 
-    # token jenkins
+    # токен в джире
     @auth = 'Basic ' + Base64.encode64( "#{@login}:#{@password}" ).chomp
   end
 
-  attr_accessor :path
+  attr_accessor :path, :auth, :key, :login
 
-  # exec import_scenarios for import
-  # this method import all scenarios in jira Xray repo
+  # для импорта необходимо запустить метод import_scenarios
+  # импортирует все сценарии из проекта в репозиторий тестов, перемещая тесты в соответствующие папки
   def import_scenarios
+    # через api xray больше нельзя создавать новые сценрарии, только обновлять существующие
+    # поэтому сначала создаем недостающие сценарии в джира через ее api
+    new_scenarios = GetScenarios.new
+    if new_scenarios.get_all_scenarios_not_exists_in_jira.any?
+      puts "Будут созданы #{new_scenarios.get_all_scenarios_not_exists_in_jira.count} новых сценариев:"
+      puts new_scenarios.get_all_scenarios_not_exists_in_jira
+      new_scenarios.create_all_missing_test
+    end
+
     file_names = Dir["#{@path}features/scenarios/**/*.feature"]
     file_names.each do |file_name|
       p file_name
@@ -49,7 +58,7 @@ class Scenarios
 
       folderid = get_folderid_by_name(folder_name)
 
-      # create folder, if dont exists
+      # если папки в репозитории нет - создаем ее
       if folderid.to_s.empty?
         cur_folder = File.basename(File.dirname(file_name))
         if cur_folder == 'scenarios'
@@ -73,11 +82,12 @@ class Scenarios
     end
   end
 
-  # read user data from file
+  # считываем данные пользователя из файла
   def get_all_data
     Hash[*File.read("#{@path}scripts/data").split(/[, \n]+/)]
   end
 
+  # получаем id папки с авотестами в репозитории
   def get_id_auto_folders
     url = "https://jira.surfstudio.ru/rest/raven/1.0/api/testrepository/#{@key}/folders"
 
@@ -93,19 +103,21 @@ class Scenarios
   def create_folder(name, root_id)
     url = "https://jira.surfstudio.ru/rest/raven/1.0/api/testrepository/#{@key}/folders/#{root_id}"
     response = RestClient.post url, {:name => name}.to_json,
-                                    {:Authorization => @auth,
-                                             content_type: :json,
-                                             accept: :json}
+                               {:Authorization => @auth,
+                                content_type: :json,
+                                accept: :json}
     # puts(response)
     return response
   end
 
+  # получаем список папок с фичами
   def get_directories_name
     dir_name = "#{@path}features/scenarios"
     all_folders = Dir.entries(dir_name).select {|entry| File.directory? File.join(dir_name, entry) and !(entry =='.' || entry == '..') }
     all_folders.sort
   end
 
+  # ищем id папки в репозитории по ее имени
   def get_folderid_by_name(name)
     url = "https://jira.surfstudio.ru/rest/raven/1.0/api/testrepository/#{@key}/folders"
 
@@ -136,22 +148,25 @@ class Scenarios
     return @folder_id
   end
 
+  # имортируем фича файл
   def import_feature_files(file_name)
     url = "https://jira.surfstudio.ru/rest/raven/1.0/import/feature?projectKey=#{@key}"
 
     RestClient.post url, { :multipart => true,
-                                   :file => File.new(file_name, 'rb')},
-                         { :Authorization => @auth}
+                           :file => File.new(file_name, 'rb')},
+                    { :Authorization => @auth}
   end
 
+  # перемещаем выгруженные сценарии в нужную папку
   def move_tests(folderid, tests)
+    # https://jira.surfstudio.ru/rest/raven/1.0/folderStructure/moveTests?destinationId=1757
     url = "https://jira.surfstudio.ru/rest/raven/1.0/api/testrepository/#{@key}/folders/#{folderid}/tests"
     p url
     p tests
     response = RestClient.put url, {:add => tests}.to_json,
-                                   {:Authorization => @auth,
-                                            content_type: :json,
-                                            accept: :json}
+                              {:Authorization => @auth,
+                               content_type: :json,
+                               accept: :json}
     puts(response)
   end
 end

@@ -6,32 +6,32 @@ require 'open-uri'
 class GetApk
 
   def initialize(path)
-    # hash with data from file - scripts/data
+    # хэш со всеми данными из файла scripts/data
     @all_data = get_all_data
 
-    # project name in jenkins
+    # название проекта в дженкинсе
     @project = @all_data['project_name_jenkins']
 
-    # job name build app in jenkins
+    # название джоба для сборки в дженкинсе
     @job_name = "#{@project}_Android_TAG"
 
-    # jenkins link
+    # адрес дженкинса
     @host = "https://jenkins.surfstudio.ru/view/Projects/view/#{@project}/job/#{@job_name}/lastSuccessfulBuild"
 
-    # login in jenkins
+    # логин в дженкинсе
     @login = @all_data['login']
 
-    # pass in jenkins
+    # пароль дженкинса
     @password = @all_data['jenkins_pass']
 
-    # path to dir with autotests
+    # путь до папки с автотестами
     @path = path
 
-    # token jenkins
+    # токен в дженкинсе
     @auth = 'Basic ' + Base64.encode64( "#{@login}:#{@password}" ).chomp
   end
 
-  # read user data from file
+  # считываем данные пользователя из файла
   def get_all_data
     Hash[*File.read("#{@path}scripts/data").split(/[, \n]+/)]
   end
@@ -43,11 +43,15 @@ class GetApk
 
     xml_parse = Nokogiri::XML(response)
 
-    path_to_apk = xml_parse.xpath("//relativePath").first.content
+    all_path = xml_parse.xpath("//relativePath")
 
-    puts(path_to_apk)
+    all_path.each do |path|
+      @path_to_apk = path.content unless path.content[/qa.*\.apk$/].nil?
+    end
 
-    return path_to_apk
+    puts(@path_to_apk)
+
+    return @path_to_apk
   end
 
   def download_apk

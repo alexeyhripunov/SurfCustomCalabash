@@ -1,8 +1,12 @@
 require 'open3'
 require 'timeout'
 require 'process'
-require 'calabash-android/operations'
-require 'calabash-android/env'
+# require 'calabash-android/operations'
+# require 'calabash-android/env'
+
+def adb_command
+  "\"#{Calabash::Android::Dependencies.adb_path}\""
+end
 
 class IosLogs
 
@@ -21,7 +25,7 @@ class IosLogs
     @stoplog = Open3.popen2e("kill -SIGINT #{@pid}")
 
     begin
-      Timeout.timeout(5) { File.open(@log_file, 'w') { |f| f << @logcat[1].readlines.join("\n") } }
+      Timeout.timeout(10) { File.open(@log_file, 'w') { |f| f << @logcat[1].readlines.join("\n") } }
     rescue Timeout::Error
       puts("Error write log file")
       @logcat[0].close
