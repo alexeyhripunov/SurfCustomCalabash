@@ -32,7 +32,7 @@ else
       require 'calabash-android/utils'
       require 'calabash-android/java_keystore'
       require 'calabash-android/env'
-      require File.join(File.dirname(__FILE__), "surf-console-helpers")
+      require File.join(File.dirname(__FILE__), "surf-calabash-console")
 
       if ARGV.empty? or not is_apk_file?(ARGV.first)
         puts "The first parameter must be the path to the apk file."
@@ -42,7 +42,7 @@ else
       end
 
     when 'ios_console'
-      require File.join(File.dirname(__FILE__), "surf-console-helpers")
+      require File.join(File.dirname(__FILE__), "surf-calabash-console")
       ios_console
     when 'version'
       require_relative '../lib/SurfCustomCalabash/version'

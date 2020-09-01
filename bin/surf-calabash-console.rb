@@ -3,7 +3,6 @@
 require 'fileutils'
 require 'rbconfig'
 
-
 def android_console(app_path = nil)
   test_server_path = test_server_path(app_path)
 
@@ -45,4 +44,19 @@ end
 
 def relative_to_full_path(file_path)
   File.expand_path(file_path)
+end
+
+def ios_console
+  path = ENV['CALABASH_IRBRC']
+  unless path
+    if File.exist?('.irbrc')
+      path = File.expand_path('.irbrc')
+    end
+  end
+  unless path
+    path = File.expand_path(File.join(File.dirname(__FILE__), '../sources/irbrcs/ios', 'irbrc'))
+  end
+  ENV['IRBRC'] = path
+  puts "Running irb..."
+  exec("irb")
 end
