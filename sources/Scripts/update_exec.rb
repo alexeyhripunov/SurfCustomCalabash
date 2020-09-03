@@ -41,17 +41,17 @@ class Execution
       url = "https://jira.surfstudio.ru/rest/raven/1.0/api/testexec/#{test_exec}/test?page=#{i}"
 
       response = RestClient.get url, {:Authorization => @auth}
-      # puts(response)
+      # Kernel.puts(response)
       parse_response = JSON.parse(response.body)
 
-      # puts(parse_response)
+      # Kernel.puts(parse_response)
 
       parse_response.each do |keys|
         key_arr << keys['key']
       end
     end
 
-    puts(key_arr.sort)
+    Kernel.puts(key_arr.sort)
 
     $test_keys = key_arr.sort
   end

@@ -7,7 +7,7 @@ def android_console(app_path = nil)
   test_server_path = test_server_path(app_path)
 
   path = ENV['CALABASH_IRBRC']
-  puts(path)
+  Kernel.puts(path)
 
   unless path
     if File.exist?('irbrc')
@@ -20,7 +20,7 @@ def android_console(app_path = nil)
   end
 
   ENV['IRBRC'] = path
-  puts(path)
+  Kernel.puts(path)
 
   unless ENV['APP_PATH']
     ENV['APP_PATH'] = app_path
@@ -32,9 +32,9 @@ def android_console(app_path = nil)
 
   build_test_server_if_needed(app_path)
 
-  puts 'Starting calabash-android console...'
-  puts "Loading #{ENV['IRBRC']}"
-  puts 'Running irb...'
+  Kernel.puts 'Starting calabash-android console...'
+  Kernel.puts "Loading #{ENV['IRBRC']}"
+  Kernel.puts 'Running irb...'
   exec('irb')
 end
 

@@ -8,7 +8,7 @@ class Find
     file_names = Dir["#{path}/**/R.java"]
 
     file_names.each do |name|
-      puts(name)
+      Kernel.puts(name)
 
       lines = Array.new
       text=File.open(name).read
@@ -46,7 +46,7 @@ class Find
     file_names = Dir["#{path}/**/*.rb"]
     file_names.each do |name|
 
-      puts(name)
+      Kernel.puts(name)
 
       lines = Array.new
       text=File.open(name).read

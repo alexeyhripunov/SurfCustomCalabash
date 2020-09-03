@@ -87,7 +87,7 @@ class AndroidVideoCapture
   def convert_video(path_to_input, path_to_output, quality = @quality)
     movie = FFMPEG::Movie.new(path_to_input)
 
-    puts "size #{movie.size}"
+    Kernel.puts "size #{movie.size}"
 
     options = {video_codec: "h264", frame_rate: '10', resolution: "320x180"}
     transcoder_options = {preserve_aspect_ratio: :width}

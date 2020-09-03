@@ -3,13 +3,13 @@ require 'json'
 require "rubygems"
 
 def msg(title, &block)
-  puts "\n" + "-"*10 + title + "-"*10
+  Kernel.puts "\n" + "-"*10 + title + "-"*10
   block.call
-  puts "-"*10 + "-------" + "-"*10 + "\n"
+  Kernel.puts "-"*10 + "-------" + "-"*10 + "\n"
 end
 
 def print_usage
-  puts <<EOF
+  Kernel.puts <<EOF
   Usage: SurfCustomCalabash <command-name> [parameters] [options]
   <command-name> can be one of
     help

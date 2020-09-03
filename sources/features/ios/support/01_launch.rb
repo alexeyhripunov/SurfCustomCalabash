@@ -36,7 +36,7 @@ Before  do |scenario|
   begin
     calabash_exit
   rescue HTTPClient::ReceiveTimeoutError => e
-    puts(e)
+    Kernel.puts(e)
   end
   
   ENV['SCREENSHOT_PATH'] = './reports/'
@@ -94,7 +94,7 @@ After do
   begin
     calabash_exit
   rescue HTTPClient::ReceiveTimeoutError => e
-    puts(e)
+    Kernel.puts(e)
   end
 
 end
@@ -154,7 +154,7 @@ After do |scenario|
   if scenario_tags.include?('@record') && scenario.passed?
     create_folder
     embed_video
-    # puts("file name #{@video_capture.video_file}")
+    # Kernel.puts("file name #{@video_capture.video_file}")
   elsif scenario.passed?
     delete_file(@write_log.log_file) unless @write_log.nil?
     delete_file(@video_capture.video_file) unless @video_capture.nil?

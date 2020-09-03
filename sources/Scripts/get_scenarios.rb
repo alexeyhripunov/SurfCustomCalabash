@@ -35,7 +35,7 @@ class GetScenarios
         all_scenarios.push(x.strip)
       end
     end
-    # puts all_scenarios.count
+    # Kernel.puts all_scenarios.count
     return all_scenarios
   end
 
@@ -45,7 +45,7 @@ class GetScenarios
     get_all_scenarios_name.each do |x|
       all_work_scenarios.push(x) unless x.match(/#/)
     end
-    # puts all_work_scenarios
+    # Kernel.puts all_work_scenarios
     # p all_work_scenarios.count
     return all_work_scenarios
   end
@@ -63,7 +63,7 @@ class GetScenarios
       scenarios_name.push(x.strip)
     end
 
-    puts scenarios_name
+    Kernel.puts scenarios_name
     p scenarios_name.count
     return scenarios_name
   end
@@ -71,10 +71,10 @@ class GetScenarios
   # получить все сценарии с одинаковым именем
   def show_all_duplicate_scenarios
     if get_all_scenarios_name.duplicate.reject { |c| c.empty? }.any?
-      puts "В репозитории найдены сценарии с одинаковыми названиями:"
-      puts get_all_scenarios_name.duplicate
+      Kernel.puts "В репозитории найдены сценарии с одинаковыми названиями:"
+      Kernel.puts get_all_scenarios_name.duplicate
     else
-      puts "В репозитории нет сценариев с одинаковыми названиями"
+      Kernel.puts "В репозитории нет сценариев с одинаковыми названиями"
     end
   end
 
@@ -93,8 +93,8 @@ class GetScenarios
     summary = {}
 
     parse_response['issues'].each {|x| summary[x['key']] = x['fields'].values[0]}
-    # puts summary
-    # puts summary.count
+    # Kernel.puts summary
+    # Kernel.puts summary.count
     return summary
   end
 
@@ -109,23 +109,23 @@ class GetScenarios
   end
 
   def show_all_scenarios_not_exists_in_repo
-    puts get_all_scenarios_not_exists_in_repo.values
+    Kernel.puts get_all_scenarios_not_exists_in_repo.values
   end
 
   # выводит в консоль информацию о недостающих или лишних тестах в джире
   def show_difference_tests
     if get_all_scenarios_not_exists_in_jira.any?
-      puts "В jira не хватает #{get_all_scenarios_not_exists_in_jira.count} сценариев, которые есть в репозитории:"
-      puts get_all_scenarios_not_exists_in_jira
-      puts "\n"
+      Kernel.puts "В jira не хватает #{get_all_scenarios_not_exists_in_jira.count} сценариев, которые есть в репозитории:"
+      Kernel.puts get_all_scenarios_not_exists_in_jira
+      Kernel.puts "\n"
     end
     if get_all_scenarios_not_exists_in_repo.any?
-      puts "В jira найдены #{get_all_scenarios_not_exists_in_repo.count} сценариев, которых нет в репозитории:"
-      puts get_all_scenarios_not_exists_in_repo.values
-      puts "\n"
+      Kernel.puts "В jira найдены #{get_all_scenarios_not_exists_in_repo.count} сценариев, которых нет в репозитории:"
+      Kernel.puts get_all_scenarios_not_exists_in_repo.values
+      Kernel.puts "\n"
     end
     unless get_all_scenarios_not_exists_in_repo.any? || get_all_scenarios_not_exists_in_jira.any?
-      puts "В jira есть все сценарии из репозитория и нет лишних"
+      Kernel.puts "В jira есть все сценарии из репозитория и нет лишних"
     end
   end
 
@@ -148,9 +148,9 @@ class GetScenarios
 
   # создаем все недостающие тесты в джире
   def create_all_missing_test
-    puts "Созданы сценарии:" if get_all_scenarios_not_exists_in_jira.any?
+    Kernel.puts "Созданы сценарии:" if get_all_scenarios_not_exists_in_jira.any?
     get_all_scenarios_not_exists_in_jira.each do |name|
-      puts "#{create_cucumber_test(name)} #{name}"
+      Kernel.puts "#{create_cucumber_test(name)} #{name}"
     end
   end
 
@@ -165,7 +165,7 @@ class GetScenarios
   # удаляем тесты, которые есть в джира, но нет в репо
   def delete_all_waste_tests
     get_all_scenarios_not_exists_in_repo.each do |k, v|
-      puts "Сценарий: #{v} успешно удален" if delete_issues_by_key(k) == 204
+      Kernel.puts "Сценарий: #{v} успешно удален" if delete_issues_by_key(k) == 204
     end
   end
 end
