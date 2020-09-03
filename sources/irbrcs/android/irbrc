@@ -18,21 +18,21 @@ begin
           '# Uninstall',
           '$ gem update --system',
           '$ gem uninstall -Vax --force --no-abort-on-dependent awesome_print']
-    puts msg
+    Kernel.puts msg
     exit(1)
   end
 
 def reload!(print = true)
-  puts 'Reloading ...'
+  Kernel.puts 'Reloading ...'
   # Main project directory.
   root_dir =  Dir.pwd
-  puts(root_dir)
+  Kernel.puts(root_dir)
   # Directories within the project that should be reloaded.
   reload_dirs = root_dir+'/features/android/pages'
   # Loop through and reload every file in all relevant project directories.
   Dir.glob(reload_dirs).each do |dir|
     Dir.glob(Dir.pwd+'/features/android/pages/*.rb').each { |f| load(f) }
-    puts(dir)
+    Kernel.puts(dir)
     init_android
   end
   # Return true when complete.
@@ -57,14 +57,14 @@ end
   require 'calabash-android/defaults'
   require 'calabash-android/operations'
   ENV['PLATFORM'] = 'android'
-  puts(ENV['PLATFORM'])
+  Kernel.puts(ENV['PLATFORM'])
   require 'require_all'
   require_all Dir.pwd+'/features/android/pages'
   init_android	
     #End of custom code 
 
 rescue Exception => e
-  puts "Error loading Calabash irbrc: #{e}"
+  Kernel.puts "Error loading Calabash irbrc: #{e}"
   exit(1)
 end
 
@@ -72,7 +72,7 @@ module Calabash
   module Android
     module Operations
       def embed(*args)
-        puts "Embed is a Cucumber method and is not available in this console."
+        Kernel.puts "Embed is a Cucumber method and is not available in this console."
       end
     end
   end
@@ -93,13 +93,13 @@ end
 
 def disable_usage_tracking
   preferences.usage_tracking = "none"
-  puts "Calabash will not collect usage information."
+  Kernel.puts "Calabash will not collect usage information."
   "none"
 end
 
 def enable_usage_tracking(level="system_info")
   preferences.usage_tracking = level
-  puts "Calabash will collect statistics using the '#{level}' rule."
+  Kernel.puts "Calabash will collect statistics using the '#{level}' rule."
   level
 end
 

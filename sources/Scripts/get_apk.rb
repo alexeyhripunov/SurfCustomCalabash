@@ -49,7 +49,7 @@ class GetApk
       @path_to_apk = path.content unless path.content[/qa.*\.apk$/].nil?
     end
 
-    puts(@path_to_apk)
+    Kernel.puts(@path_to_apk)
 
     return @path_to_apk
   end
@@ -58,11 +58,11 @@ class GetApk
     path = get_path_to_apk
     url = "#{@host}/artifact/#{path}"
 
-    puts('Start download')
+    Kernel.puts('Start download')
     File.open('L.apk', "wb") do |file|
       file.write open(url, :http_basic_authentication => [@login, @password]).read
     end
 
-    puts('End download')
+    Kernel.puts('End download')
   end
 end

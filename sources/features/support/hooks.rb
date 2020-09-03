@@ -12,7 +12,7 @@ elsif ENV['PLATFORM'] == 'android'
     init_android
   end
 
-else puts('Error in hooks.rb file!')
+else Kernel.puts('Error in hooks.rb file!')
 
 end
 

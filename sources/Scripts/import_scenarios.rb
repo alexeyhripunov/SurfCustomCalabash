@@ -35,8 +35,8 @@ class Scenarios
     # поэтому сначала создаем недостающие сценарии в джира через ее api
     new_scenarios = GetScenarios.new
     if new_scenarios.get_all_scenarios_not_exists_in_jira.any?
-      puts "Будут созданы #{new_scenarios.get_all_scenarios_not_exists_in_jira.count} новых сценариев:"
-      puts new_scenarios.get_all_scenarios_not_exists_in_jira
+      Kernel.puts "Будут созданы #{new_scenarios.get_all_scenarios_not_exists_in_jira.count} новых сценариев:"
+      Kernel.puts new_scenarios.get_all_scenarios_not_exists_in_jira
       new_scenarios.create_all_missing_test
     end
 
@@ -46,7 +46,7 @@ class Scenarios
 
       response = import_feature_files(file_name)
       parse_response = JSON.parse(response.body)
-      puts(parse_response)
+      Kernel.puts(parse_response)
       test_key = []
       parse_response.each{|x| test_key << x['key']}
 
@@ -92,11 +92,11 @@ class Scenarios
     url = "https://jira.surfstudio.ru/rest/raven/1.0/api/testrepository/#{@key}/folders"
 
     response = RestClient.get url, {:Authorization => @auth}
-    # puts(response)
+    # Kernel.puts(response)
 
     parse_response = JSON.parse(response.body)
     id_auto = parse_response['folders'].select {|x| x["name"] == "Auto"}[0]['id']
-    puts(id_auto)
+    Kernel.puts(id_auto)
     return id_auto
   end
 
@@ -106,7 +106,7 @@ class Scenarios
                                {:Authorization => @auth,
                                 content_type: :json,
                                 accept: :json}
-    # puts(response)
+    # Kernel.puts(response)
     return response
   end
 
@@ -124,7 +124,7 @@ class Scenarios
     @folder_id = nil
 
     response = RestClient.get url, {:Authorization => @auth}
-    # puts(response)
+    # Kernel.puts(response)
     parse_response = JSON.parse(response.body)
 
     auto = {}
@@ -167,6 +167,6 @@ class Scenarios
                               {:Authorization => @auth,
                                content_type: :json,
                                accept: :json}
-    puts(response)
+    Kernel.puts(response)
   end
 end

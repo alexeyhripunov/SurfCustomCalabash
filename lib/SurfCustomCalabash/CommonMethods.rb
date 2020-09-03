@@ -209,7 +209,7 @@ def remember(element, sleep_duration: 1, timeout_duration: 5)
   wait_element(element, sleep_duration: sleep_duration, timeout_duration: timeout_duration)
   name = query(element)
   save_name = name.first['text']
-  puts(save_name)
+  Kernel.puts(save_name)
   return save_name
 end
 
@@ -218,7 +218,7 @@ def remember_last_text(element, sleep_duration: 1, timeout_duration: 5)
   wait_element(element, sleep_duration: sleep_duration, timeout_duration: timeout_duration)
   name = query(element)
   save_name = name.last['text']
-  puts(save_name)
+  Kernel.puts(save_name)
   return save_name
 end
 
@@ -273,7 +273,7 @@ def cross_coordinate(element_front, element_behind, delta: 100)
       cross = false
     end
   end
-  # puts(cross)
+  # Kernel.puts(cross)
   return cross
 end
 
