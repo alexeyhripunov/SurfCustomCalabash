@@ -1,8 +1,6 @@
 require 'open3'
 require 'timeout'
 require 'process'
-# require 'calabash-android/operations'
-# require 'calabash-android/env'
 
 def adb_command
   "\"#{Calabash::Android::Dependencies.adb_path}\""

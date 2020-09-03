@@ -27,7 +27,6 @@ Before('@screentest') do |scenario|
   clear_file_with_stack_trace
   @scenario_name = scenario.name
   create_feature(@scenario_name)
-  # @screentest = true
 
 end
 
