@@ -29,7 +29,7 @@ class AndroidLogs
     begin
       Timeout.timeout(30) { File.open(@log_file, 'w') { |f| f << @logcat[1].readlines.join("\n") } }
     rescue Timeout::Error
-      puts("Error write log file")
+      Kernel.puts("Error write log file")
       @logcat[0].close
       @logcat[1].close
     end

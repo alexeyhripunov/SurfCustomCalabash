@@ -35,7 +35,7 @@ else
       require File.join(File.dirname(__FILE__), "surf-console-helpers")
 
       if ARGV.empty? or not is_apk_file?(ARGV.first)
-        puts "The first parameter must be the path to the apk file."
+        Kernel.puts "The first parameter must be the path to the apk file."
         exit 1
       else
         android_console(relative_to_full_path(ARGV.shift))
@@ -46,9 +46,9 @@ else
       ios_console
     when 'version'
       require_relative '../lib/SurfCustomCalabash/version'
-      puts SurfCustomCalabash::VERSION
+      Kernel.puts SurfCustomCalabash::VERSION
     else
-      puts "Invalid command '#{cmd}'"
+      Kernel.puts "Invalid command '#{cmd}'"
       print_usage
   end
 end

@@ -2,7 +2,7 @@ begin
   require "irb/completion"
   require "irb/ext/save-history"
 rescue LoadError => e
-  puts %Q[
+  Kernel.puts %Q[
 Caught a LoadError while requiring an irb module.
 
 #{e}
@@ -19,7 +19,7 @@ end
 begin
   require "awesome_print"
 rescue LoadError => e
-  puts %Q[
+  Kernel.puts %Q[
 Caught a LoadError: could not load 'awesome_print'",
 
 #{e}
@@ -59,7 +59,7 @@ rescue LoadError => _
 end
 
 def embed(x,y=nil,z=nil)
-  puts "Screenshot at #{x}"
+  Kernel.puts "Screenshot at #{x}"
 end
 
 require "calabash-cucumber"
@@ -85,7 +85,7 @@ include Calabash::Cucumber::ConsoleHelpers
 Calabash::Cucumber::ConsoleHelpers.start_readline_history!
 
 ENV['PLATFORM'] = 'ios'
-puts(ENV['PLATFORM'])
+Kernel.puts(ENV['PLATFORM'])
 Path = Dir.pwd
 require 'require_all'
 require_all Dir.pwd+'/features/ios/pages'
@@ -94,16 +94,16 @@ init_ios
 
 
 def reload!(print = true)
-  puts 'Reloading ...'
+  Kernel.puts 'Reloading ...'
   # Main project directory.
   root_dir =  Dir.pwd
-  puts(root_dir)
+  Kernel.puts(root_dir)
   # Directories within the project that should be reloaded.
   reload_dirs = root_dir+'/features/ios/pages'
   # Loop through and reload every file in all relevant project directories.
   Dir.glob(reload_dirs).each do |dir|
     Dir.glob(Dir.pwd+'/features/ios/pages/*.rb').each { |f| load(f) }
-    puts(dir)
+    Kernel.puts(dir)
     init_ios
   end
   # Return true when complete.
@@ -117,19 +117,19 @@ end
 
 def disable_usage_tracking
   preferences.usage_tracking = "none"
-  puts "Calabash will not collect usage information."
+  Kernel.puts "Calabash will not collect usage information."
   "none"
 end
 
 def enable_usage_tracking(level="system_info")
   preferences.usage_tracking = level
-  puts "Calabash will collect statistics using the '#{level}' rule."
+  Kernel.puts "Calabash will collect statistics using the '#{level}' rule."
   level
 end
 
 xcode = RunLoop::Xcode.new
 Calabash::Cucumber::UIA.redefine_instance_methods_if_necessary(xcode)
 
-puts_console_details
-puts_message_of_the_day
+Kernel.puts_console_details
+Kernel.puts_message_of_the_day
 _try_to_attach

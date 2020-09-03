@@ -19,7 +19,7 @@ class IosCapture
     @screenrecord = Open3.popen2e("xcrun simctl io booted recordVideo --codec=#{codec} #{@video_file} \n")
     # @screenrecord = Open3.popen2e("xcrun simctl io booted recordVideo #{@video_file} \n")
     @pid = @screenrecord[2].pid
-    puts("start record")
+    Kernel.puts("start record")
   end
 
   def stop_capture
@@ -31,7 +31,7 @@ class IosCapture
     @stoprecord[0].close
     @stoprecord[1].close
 
-    puts("video stopped")
+    Kernel.puts("video stopped")
   end
 
   def convert_video(path_to_input, path_to_output, quality = @quality)
