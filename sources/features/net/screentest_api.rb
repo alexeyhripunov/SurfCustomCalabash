@@ -5,7 +5,6 @@ require 'benchmark'
 require 'json'
 
 $main_big_boom_address = "https://snaptest.ps.surfstudio.ru/api/"
-$api_fix_image_paths = "fix_image_paths/"
 $api_mark_as_not_finished = "mark_not_finished/"
 $api_create_execution = "create_execution/"
 $api_create_feature = "create_feature/"
