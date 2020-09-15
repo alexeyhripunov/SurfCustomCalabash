@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+
+gem 'calabash-android'
+gem 'cucumber'
+gem 'calabash-cucumber'
+gem 'require_all'
+gem 'rake'
+gem 'pry'
+gem 'parallel_calabash'
+gem 'json', '1.8.6'
+gem 'test-unit'
+gem 'CFPropertyList', '2.2.8'
+gem 'rest-client'
+gem 'syntax'
+gem 'httpclient', '2.8.3'
+gem 'run_loop', '>=4.4.1'
+gem 'SurfCustomCalabash'
+gem 'open3'
+gem 'timeout'
+gem 'process'
+gem 'rspec'
+gem 'streamio-ffmpeg'
+
