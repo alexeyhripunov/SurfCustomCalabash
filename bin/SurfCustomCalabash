@@ -15,6 +15,7 @@ require File.join(File.dirname(__FILE__), "surf-calabash-helpers")
 @hierarchy = File.join(FileUtils.pwd, "Change_it_to_your_own_project_name")
 @source_dir = File.join(File.dirname(__FILE__), '..', 'sources')
 
+
 if ARGV.length == 0
   print_usage
 else
@@ -47,6 +48,14 @@ else
     when 'version'
       require_relative '../lib/SurfCustomCalabash/version'
       Kernel.puts SurfCustomCalabash::VERSION
+    when 'update'
+      upd = File.join(File.dirname(__FILE__), "update_files")
+      require upd
+      search_not_exists_files
+    when 'copy'
+      upd = File.join(File.dirname(__FILE__), "update_files")
+      require upd
+      copy_files
     else
       Kernel.puts "Invalid command '#{cmd}'"
       print_usage

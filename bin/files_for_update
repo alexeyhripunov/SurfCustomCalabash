@@ -1,0 +1,7 @@
+/sources/features/android/support
+/sources/features/ios/support
+/sources/features/net/screentest_api.rb
+/sources/Scripts
+/sources/find_id.rb
+/sources/group_steps.rb
+/sources/start.sh
