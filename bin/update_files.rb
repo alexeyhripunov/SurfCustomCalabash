@@ -78,3 +78,25 @@ def copy_files
   end
 end
 
+# добавляем css в выходной файл сравнения файлов для читабельности
+def add_css_style(file)
+  file.puts("<style>")
+  file.puts(Diffy::CSS)
+  file.puts("</style>")
+end
+
+# сравниваем файлы которые есть в папке автотестах и геме
+# результатом сравнения будут файлы html в папке compare
+def compare_files
+  FileUtils.mkdir_p 'compare'
+  search_exists_files.each do |name|
+    compare_result = Diffy::Diff.new(File.dirname(CUR_FOLDER + name), File.join(GEM_FOLDER, '../sources', name), :source => 'files', :format => :html)
+    unless compare_result.to_s(:text).empty?
+      puts("Файл #{name} не пуст")
+      File.open(File.join(CUR_FOLDER, '/compare/', "#{File.basename(name, ".*")}.html"), "w:UTF-8") do |file|
+        add_css_style(file)
+        file.puts(compare_result.to_s(:html))
+      end
+    end
+  end
+end
