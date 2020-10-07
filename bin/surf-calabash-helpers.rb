@@ -16,6 +16,8 @@ def print_usage
       prints more detailed help information.
     gen
       generate a features folder structure.
+    update
+      update infrastructure files in your project
     version
       prints the gem version
 

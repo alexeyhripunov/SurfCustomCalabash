@@ -10,7 +10,9 @@ def surf_gen
   end
   exit 2 unless STDIN.gets.chomp == ''
 
-  FileUtils.cp_r(@source_dir, @hierarchy)
+  puts("Please enter name autotest project:")
+  file_name = gets.chomp
+  FileUtils.cp_r(@source_dir, File.join(FileUtils.pwd, file_name))
   msg("Info") do
       Kernel.puts "hierarchy was created. \n"
   end
