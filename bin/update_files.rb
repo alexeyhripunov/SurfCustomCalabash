@@ -121,9 +121,9 @@ end
 # show files, then don't exixst in autotest folder
 def show_files_ready_for_copy
   unless search_not_exists_files.empty?
-    puts("Файлы которых нет в текущей папке с автотестами и они будут добавлены:")
-    puts search_not_exists_files
-    puts("\n")
+    Kernel.puts("Файлы которых нет в текущей папке с автотестами и они будут добавлены:")
+    Kernel.puts search_not_exists_files
+    Kernel.puts("\n")
   end
 end
 
@@ -140,63 +140,63 @@ end
 
 # show files, then need update and update them
 def show_files_for_update
-  puts("\n")
+  Kernel.puts("\n")
 
   new_files = search_not_exists_files
   exist_files = compare_files
 
   if !new_files.empty? && exist_files.empty?
     show_files_ready_for_copy
-    puts("Скопировать все файлы? (y/n)")
+    Kernel.puts("Скопировать все файлы? (y/n)")
     answer = gets
 
     if answer == "y\n"|| answer == "\n"
       copy_files(new_files)
-      puts("Файлы успешно добавлены!")
+      Kernel.puts("Файлы успешно добавлены!")
     end
   elsif !exist_files.empty?
     show_files_ready_for_copy
-    puts("Файлы которые уже есть в текущей папки с автотестами, но требуют обновления:")
-    puts exist_files
-    puts("\n")
-    puts("Все изменения в указанных файлах можно посмотреть в папке compare")
-    puts("Для каждого файла создан html-отчет с отображением изменений")
-    puts("\n")
-    puts("Скопировать все файлы или исключить некоторые файлы из обновления?")
-    puts("1 - Скопировать все файлы")
-    puts("2 - Исключить файлы из обновления")
+    Kernel.puts("Файлы которые уже есть в текущей папке с автотестами, но требуют обновления:")
+    Kernel.puts exist_files
+    Kernel.puts("\n")
+    Kernel.puts("Все изменения в указанных файлах можно посмотреть в папке compare")
+    Kernel.puts("Для каждого файла создан html-отчет с отображением изменений")
+    Kernel.puts("\n")
+    Kernel.puts("Скопировать все файлы или исключить некоторые файлы из обновления?")
+    Kernel.puts("1 - Скопировать все файлы")
+    Kernel.puts("2 - Исключить файлы из обновления")
     answer = gets.chomp
 
     if answer == "1"
       copy_files(new_files)
       copy_files(exist_files)
-      puts("Файлы успешно добавлены!")
+      Kernel.puts("Файлы успешно добавлены!")
     elsif answer == "2"
-      puts("Введите в одной строке через запятую имена файлов, которые надо исключить из обновления:")
+      Kernel.puts("Введите в одной строке через запятую имена файлов, которые надо исключить из обновления:")
       file_names = gets.chomp
       files_for_update = excludes_files_for_update(exist_files,file_names)
 
       if !files_for_update.empty? || !new_files.empty?
-        puts("Список файлов для обновления:")
-        puts files_for_update
-        puts new_files
-        puts("Скопировать все файлы? (y/n)")
+        Kernel.puts("Список файлов для обновления:")
+        Kernel.puts files_for_update
+        Kernel.puts new_files
+        Kernel.puts("Скопировать все файлы? (y/n)")
         answer = gets
 
         if answer == "y\n"|| answer == "\n"
           copy_files(new_files)
           copy_files(files_for_update)
-          puts("Файлы успешно добавлены!")
+          Kernel.puts("Файлы успешно добавлены!")
         end
       else
-        puts("Нет файлов для обновлений!")
+        Kernel.puts("Нет файлов для обновлений!")
       end
     end
   end
 
   if new_files.empty? && compare_files.empty?
-    puts("В текущей папке все инфраструктурные файлы актуальны!")
+    Kernel.puts("В текущей папке все инфраструктурные файлы актуальны!")
   end
 
-  puts("\n")
+  Kernel.puts("\n")
 end

@@ -53,8 +53,8 @@ else
       if File.exists?(@hierarchy)
         show_files_for_update
       else
-        puts("В текущей папке нет файлов автотестов, перейдите в нужную папку или создайте новый проект используя команду:")
-        puts("SurfCustomCalabash gen")
+        Kernel.puts("В текущей папке нет файлов автотестов, перейдите в нужную папку или создайте новый проект используя команду:")
+        Kernel.puts("SurfCustomCalabash gen")
       end
     else
       Kernel.puts "Invalid command '#{cmd}'"
