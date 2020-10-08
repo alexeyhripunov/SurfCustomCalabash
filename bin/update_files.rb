@@ -3,16 +3,14 @@ require 'diffy'
 
 # for compare files use gem diffy https://github.com/samg/diffy
 
-# папка из которой происходит запуск гема
 CUR_FOLDER = FileUtils.pwd
 
-# папка в которой расположены исходные файлы гема
 GEM_FOLDER = File.dirname(__FILE__)
 
-# файл со списком файлов для обновления
+# list files for update
 FILES_FOR_UPDATE = File.join(GEM_FOLDER, 'files_for_update')
 
-# путь до фала data
+# path to data file
 DATA_FILE = "/Scripts/data"
 
 # read from file, files that need update
@@ -26,7 +24,7 @@ def read_file_to_arr(path_to_file)
   return arr_lines
 end
 
-# получаем список файлов для обновления из папки sources в геме
+# get list files from sourcec folder in gem
 def get_list_files_for_update
   list_files = read_file_to_arr(FILES_FOR_UPDATE)
   all_files = Array.new
@@ -39,7 +37,7 @@ def get_list_files_for_update
       Dir["#{path}/*"].each {|pth| all_files.push(pth)}
     end
   end
-  # puts all_files
+
   return all_files
 end
 
@@ -54,7 +52,7 @@ def get_list_for_search
   return all_files
 end
 
-# ищем файлы из списка для обновления которых нет в папке с автотестами
+# search files, then not exist in autotest folder
 def search_not_exists_files
   not_exists_files = Array.new
   get_list_for_search.each do |name|
@@ -64,20 +62,19 @@ def search_not_exists_files
   return not_exists_files
 end
 
-# ищем файлы из списка для обновления которые есть в папке с автотестами
+# search files, then exist in autotest folder
 def search_exists_files
   exists_files = Array.new
   get_list_for_search.each do |name|
     exists_files.push(name) if File.file?(CUR_FOLDER + name)
   end
 
-  # puts exists_files
-  # исключаем файл data из массива существующих файлов, чтобы не затереть данные пользователя
+  # exclude file data from list, then to don't erase user data
   exclude_str_from_arr(exists_files, DATA_FILE)
   return exists_files
 end
 
-# копируем файлы
+# copy files from gem to autotest folder
 def copy_files(list_for_copy)
   list_for_copy.each do |name|
     FileUtils.mkdir_p File.dirname(CUR_FOLDER + name)
@@ -85,15 +82,15 @@ def copy_files(list_for_copy)
   end
 end
 
-# добавляем css в выходной html-файл сравнения для улучшения читабельности
+# add ccs style in html-report for readability
 def add_css_style(file)
   file.puts("<style>")
   file.puts(Diffy::CSS)
   file.puts("</style>")
 end
 
-# сравниваем файлы которые есть в папке автотестах и геме
-# результатом сравнения будут файлы html в папке compare
+# compare files from gem and autotest folder
+# the result would be html file with differences in compare folder
 def compare_files
   need_copy = Array.new
   FileUtils.rm_rf(Dir[File.join(CUR_FOLDER, '/compare/*')])
@@ -109,22 +106,19 @@ def compare_files
     end
   end
 
-  # puts need_copy
   return need_copy
 end
 
-# удаляем из массива элемент совпадающий с str_name
+# delete from array element match str_name
 def exclude_str_from_arr(input_arr, str_name)
   result_arr = input_arr
   need_del = result_arr.select { |el| el.include? str_name}
   need_del.each do |value|
     result_arr.delete(value)
   end
-
-  # return result_arr
 end
 
-# выводим список файлов, которых нет в проекте
+# show files, then don't exixst in autotest folder
 def show_files_ready_for_copy
   unless search_not_exists_files.empty?
     puts("Файлы которых нет в текущей папке с автотестами и они будут добавлены:")
@@ -133,7 +127,7 @@ def show_files_ready_for_copy
   end
 end
 
-# исключаем файлы, которые не нужно обновлять
+# exclude files from list, then don't need update
 def excludes_files_for_update(input_arr, list_files)
   all_files = list_files.split(/,\s*/)
   list_files_for_update = input_arr
@@ -141,11 +135,10 @@ def excludes_files_for_update(input_arr, list_files)
     exclude_str_from_arr(list_files_for_update, name)
   end
 
-  # p list_files_for_update
   return list_files_for_update
 end
 
-# выводим информацию о изменения в файлах
+# show files, then need update and update them
 def show_files_for_update
   puts("\n")
 
