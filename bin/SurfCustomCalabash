@@ -12,8 +12,9 @@ end
 
 require File.join(File.dirname(__FILE__), "surf-calabash-helpers")
 
-@hierarchy = File.join(FileUtils.pwd, "Change_it_to_your_own_project_name")
+@hierarchy = File.join(FileUtils.pwd, "features")
 @source_dir = File.join(File.dirname(__FILE__), '..', 'sources')
+
 
 if ARGV.length == 0
   print_usage
@@ -47,6 +48,14 @@ else
     when 'version'
       require_relative '../lib/SurfCustomCalabash/version'
       Kernel.puts SurfCustomCalabash::VERSION
+    when 'update'
+      require File.join(File.dirname(__FILE__), "update_files")
+      if File.exists?(@hierarchy)
+        show_files_for_update
+      else
+        Kernel.puts("В текущей папке нет файлов автотестов, перейдите в нужную папку или создайте новый проект используя команду:")
+        Kernel.puts("SurfCustomCalabash gen")
+      end
     else
       Kernel.puts "Invalid command '#{cmd}'"
       print_usage

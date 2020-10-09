@@ -34,8 +34,7 @@ Install gem in your exist project, add in your ios or android ruby files.
 **CommonMethods** contains different methods (taps, swipes, waits and other) for both platforms.
 
 ### Create new project
-You should move to the directory which would contains folder with your tests. 
-surf-calabash will create it by itself with the name **Change_it_to_your_own_project_name**: 
+You should move to the directory which would contains folder with your tests and execute command and then enter folder name 
     
     $ SurfCustomCalabash gen
     
@@ -92,4 +91,10 @@ Also it shows some integration with Xray Jira plugin.
 
 Shell script for useful launch all helpful scripts of folder above.
 
- 
+### Update infrastructure files
+
+To check the relevance of the infrastructure files of your project with autotests, execute command:
+
+    $ SurfCustomCalabash update
+
+If your project has files that are not up-to-date, you will be prompted to update them all or only those you need.
